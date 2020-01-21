@@ -1,0 +1,20 @@
+{
+  "name": "block2js",
+  "version": "1.0.0",
+  "description": "a blockchain in js",
+  "main": "main.js",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "blockchain",
+    "crypto",
+    "kiirachein"
+  ],
+  "author": "henry wycliffe kirya",
+  "license": "ISC"
+}
