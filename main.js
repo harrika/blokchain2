@@ -6,17 +6,27 @@ class Block{
 		this.timestamp = timestamp;
 		this.data = data;
 		this.prevHash = prevHash;
+		this.nonce = 0;
 		this.hash = this.calculateHash();
 	}
 
 	calculateHash(){
-		return SHA256(this.index+this.timestamp+this.prevHash+ JSON.stringify(this.data)).toString();
+		return SHA256(this.index+this.timestamp+this.prevHash+this.nonce+JSON.stringify(this.data)).toString();
+	}
+
+	blockMine(dfclty){
+		while(this.hash.substring(0,dfclty) !== Array(dfclty+1).join("0")) {
+			this.nonce++;
+			this.hash = this.calculateHash();
+		}
+//		console.log("nonce: ",this.nonce);
 	}
 }
 
 class Blockchain{
 	constructor(){
 		this.chain = [this.createGenesis()];
+		this.difficulty = 3;
 	}
 
 	createGenesis(){
@@ -27,9 +37,9 @@ class Blockchain{
 	}
 	addBlock(newblk){
 		newblk.prevHash = this.getLatest().hash;
-		newblk.hash = newblk.calculateHash();
+		newblk.blockMine(this.difficulty);
 		this.chain.push(newblk);
-		console.log('adding block', this.chain.length, ": ", newblk.hash);
+		console.log('adding mined block', this.chain.length, ": ", newblk.hash,"-",newblk.nonce);
 	}
 	validChain() {
 		for (let i=1; i<this.chain.length; i++){
@@ -56,7 +66,7 @@ kiira.addBlock(new Block(4,'01/25/20','credit usd: 2300'));
 kiira.addBlock(new Block(5,'02/05/20','credit usd: 230'));
 kiira.addBlock(new Block(6,'02/12/20','credit usd: 300'));
 
-console.log(JSON.stringify(kiira, null, 4));
+// console.log(JSON.stringify(kiira, null, 4));
 // kiira.chain[2].data = "credit aud: 33000";
 
 console.log('kiira chain valid?  ', kiira.validChain());
